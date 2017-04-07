@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html ng-app="app" ng-strict-di="true">
+<head>
+<meta charset="utf-8">
+<title></title>
+</head>
+<body>
+<!--script src="./js/index.js"></script-->
+<script>
+// class ClassA {
+// 	constructor(a, b, c){
+//
+// 	}
+// 	methodfromA(){
+// 		console.log('class a method a')
+// 	}
+// }
+// function FunA(){
+// 	if(this.__proto__ !== FunA.prototype){
+// 		throw('不是new')
+// 	}
+// 	this.props1 = 123
+// 	console.log(this)
+// }
+// FunA.prototype = {
+// 	methodfromA: function(){
+// 		console.log('fun a method a')
+// 	}
+// }
+//
+// function FunB(){
+// 	FunA.apply(this, arguments)
+// 	this.propsB = '222222'
+// }
+// FunB.prototype = new FunA
+// FunB.prototype.methodformB = function(){
+//
+// }
+//
+// let a = new ClassA()
+// class ClassB extends ClassA {
+// 	constructor(a, b, c){
+//
+// 		super(a, b, c)
+// 	}
+// 	methodfromB(){
+// 		console.log('class b method b')
+// 	}
+// }
+// let b = new ClassB()
+// class MyDate extends Date {
+// 	myTime(){
+// 		return Date.now() + '___'
+// 	}
+// }
+
+function getHTML(url){
+	return new Promise((resolve, reject) => {
+		let xhr = new XMLHttpRequest()
+		xhr.open('GET', url)
+		xhr.onload = function(){
+			resolve(xhr.responseText)
+		}
+		xhr.onerror = function(e){
+			reject('ERR')
+		}
+		xhr.send()
+	})
+}
+
+
+let pro = new Promise(function(resolve, reject){
+	setTimeout(function(){
+		resolve(123)
+	}, 1000)
+})
+// pro
+// 	.then(data => {console.log(data); return data + 1})
+// 	.then(data2 => console.log(data2))
+// Promise.all([1,2,3,4,5].map(i => {
+// 	if(i === 5){
+// 		return getHTML('http://www.qq.com/')
+// 	}
+// 	return getHTML(`./data/${i}.txt`)
+// })).then(data => console.log(data))
+// 	.catch(err => console.log(err))
+function loop(){
+	return getHTML('./data/1.txt').then((data) => {
+		console.log(data, Date.now())
+		return loop()
+	})
+}
+getHTML('./data/1.txt')
+	.then(url => {
+		console.log(url)
+		return getHTML(url)
+	})
+	.then(url => {
+		console.log(url)
+		return getHTML(url)
+	})
+	.then(url => {
+		console.log(url)
+		return getHTML(url)
+	})
+	.then(url => {
+		console.log(url)
+		return getHTML(url)
+	})
+	
+getHTML('./data/1.txt', function(url){
+	console.log(url)
+	return getHTML(url, function(url){
+		console.log(url)
+		return getHTML(url, function(url){
+			console.log(url)
+			return getHTML(url)
+		})
+	})
+})
+
+</script>
+</body>
+</html>
